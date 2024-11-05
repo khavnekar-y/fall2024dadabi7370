@@ -1,0 +1,11 @@
+{
+	"name": "ls_ykfalldamg7370",
+	"properties": {
+		"description": "Dadabi Fall 2024",
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://ykfalldamg7370.dfs.core.windows.net/"
+		}
+	}
+}
