@@ -1,0 +1,10 @@
+{
+	"name": "ls_ykstgblobdamg7370",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://ykstgblobdamg7370.dfs.core.windows.net/"
+		}
+	}
+}
