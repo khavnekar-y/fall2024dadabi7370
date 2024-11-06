@@ -196,6 +196,13 @@
 						}
 					},
 					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "ykstgblobdamg7370",
+							"type": "LinkedServiceReference"
+						},
+						"path": "snowstaging"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
