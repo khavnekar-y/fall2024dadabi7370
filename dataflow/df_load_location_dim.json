@@ -19,7 +19,15 @@
 					"name": "GeoData"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_snowflake_location_dim",
+						"type": "DatasetReference"
+					},
+					"name": "sinkLocationDIM"
+				}
+			],
 			"transformations": [
 				{
 					"name": "join1"
@@ -63,7 +71,33 @@
 				"     stepValue: 1L) ~> surrogateKey",
 				"surrogateKey derive(LOCATION_SK = MAXLOCATIONSK + RowNum,",
 				"          DI_CREATED_DT = toString(currentDate(),'YYYY-MM-dd'),",
-				"          DI_JOB_ID = $DI_JOB_ID) ~> derivedColumn1"
+				"          DI_JOB_ID = $DI_JOB_ID) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          LOCATION_SK as string,",
+				"          ZIP as string,",
+				"          CITY as string,",
+				"          STATE as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          LOCATION_SK,",
+				"          ZIP = zipcode,",
+				"          CITY = city,",
+				"          STATE = state,",
+				"          DI_JOB_ID,",
+				"          DI_CREATED_DT",
+				"     )) ~> sinkLocationDIM"
 			]
 		}
 	}
