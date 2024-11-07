@@ -1,0 +1,70 @@
+{
+	"name": "df_load_location_dim",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_snowflake_location_dim",
+						"type": "DatasetReference"
+					},
+					"name": "LocationDIM"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_GeoCode",
+						"type": "DatasetReference"
+					},
+					"name": "GeoData"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "surrogateKey"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     DI_JOB_ID as string ('1')",
+				"}",
+				"source(output(",
+				"          MAXLOCATIONSK as decimal(38,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'SELECT NVL(MAX(LOCATION_SK),0) AS\\nMaxLocationSK FROM DEMO.Location_DIM',",
+				"     format: 'query') ~> LocationDIM",
+				"source(output(",
+				"          state_fips as string,",
+				"          state as string,",
+				"          state_abbr as string,",
+				"          zipcode as string,",
+				"          county as string,",
+				"          city as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> GeoData",
+				"GeoData, LocationDIM join(1==1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 keyGenerate(output(RowNum as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey",
+				"surrogateKey derive(LOCATION_SK = MAXLOCATIONSK + RowNum,",
+				"          DI_CREATED_DT = toString(currentDate(),'YYYY-MM-dd'),",
+				"          DI_JOB_ID = $DI_JOB_ID) ~> derivedColumn1"
+			]
+		}
+	}
+}
