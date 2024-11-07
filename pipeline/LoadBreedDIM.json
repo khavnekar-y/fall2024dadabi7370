@@ -19,7 +19,10 @@
 						"referenceName": "df_load_breed_dim",
 						"type": "DataFlowReference",
 						"parameters": {
-							"DI_JOB_ID": "'1'"
+							"DI_JOB_ID": {
+								"value": "'@{pipeline().RunId}'",
+								"type": "Expression"
+							}
 						}
 					},
 					"compute": {
