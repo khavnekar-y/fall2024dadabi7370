@@ -33,6 +33,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"DI_JOB_ID": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }

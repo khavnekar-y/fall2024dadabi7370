@@ -6,17 +6,17 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_snowflake_location_dim",
-						"type": "DatasetReference"
-					},
-					"name": "LocationDIM"
-				},
-				{
-					"dataset": {
 						"referenceName": "ds_GeoCode",
 						"type": "DatasetReference"
 					},
 					"name": "GeoData"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_snowflake_location_dim",
+						"type": "DatasetReference"
+					},
+					"name": "LocationDIM"
 				}
 			],
 			"sinks": [
@@ -44,13 +44,6 @@
 				"     DI_JOB_ID as string ('1')",
 				"}",
 				"source(output(",
-				"          MAXLOCATIONSK as decimal(38,0)",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     query: 'SELECT NVL(MAX(LOCATION_SK),0) AS\\nMaxLocationSK FROM DEMO.Location_DIM',",
-				"     format: 'query') ~> LocationDIM",
-				"source(output(",
 				"          state_fips as string,",
 				"          state as string,",
 				"          state_abbr as string,",
@@ -61,6 +54,13 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> GeoData",
+				"source(output(",
+				"          MAXLOCATIONSK as decimal(38,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'SELECT NVL(MAX(LOCATION_SK),0) AS\\nMaxLocationSK FROM DEMO.Location_DIM',",
+				"     format: 'query') ~> LocationDIM",
 				"GeoData, LocationDIM join(1==1,",
 				"     joinType:'cross',",
 				"     matchType:'exact',",
