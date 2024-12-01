@@ -1,5 +1,5 @@
 {
-	"name": "ds_AzureSql_cust",
+	"name": "ds_AzureSql_demo",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure",
