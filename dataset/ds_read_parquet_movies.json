@@ -1,0 +1,21 @@
+{
+	"name": "ds_read_parquet_movies",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_ykfalldamg7370",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "@dataset().Filename",
+				"folderPath": "@if(equals(dataset().Directory,'na'),'',dataset().Directory)",
+				"fileSystem": "silver"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
