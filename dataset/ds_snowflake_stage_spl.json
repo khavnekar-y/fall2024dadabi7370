@@ -5,6 +5,11 @@
 			"referenceName": "ls_snowflake_demo1",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"table_name": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "SnowflakeV2Table",
 		"schema": [
@@ -46,8 +51,14 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "STAGE",
-			"table": "SEATTLE_PET_LICENSES"
+			"schema": {
+				"value": "@dataset().schema_name",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().table_name",
+				"type": "Expression"
+			}
 		}
 	}
 }
