@@ -5,13 +5,24 @@
 			"referenceName": "ls_ykfalldamg7370",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"tname": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "@dataset().Filename",
-				"folderPath": "@if(equals(dataset().Directory,'na'),'',dataset().Directory)",
+				"fileName": {
+					"value": "@dataset().tname",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "NA",
+					"type": "Expression"
+				},
 				"fileSystem": "silver"
 			},
 			"compressionCodec": "snappy"
